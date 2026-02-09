@@ -56,3 +56,36 @@ Kapcsold be az **Email értesítések** opciót, és állíts be egy értesíté
 ## Support
 
 Kérdés vagy probléma esetén nyiss egy Issue-t a GitHub-on.
+
+
+---
+
+Nem minden tárhely engedi a security header beállítást php-ból. Ha ilyennel találkozol, az alábbi kódokat tedd be a .htaccessbe, és működni fog.
+
+```
+<IfModule mod_headers.c>
+
+  # HSTS – CSAK HA HTTPS VAN MINDENHOL
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+  # XSS / MIME sniffing / iframe védelem
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+
+  # Referer policy
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # Permissions policy (régi Feature-Policy utódja)
+  Header set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=()"
+
+  # Content Security Policy – ALAP, WORDPRESS-BARÁT
+  Header set Content-Security-Policy "default-src 'self'; \
+    script-src 'self' 'unsafe-inline' 'unsafe-eval'; \
+    style-src 'self' 'unsafe-inline'; \
+    img-src 'self' data: https:; \
+    font-src 'self' data: https:; \
+    connect-src 'self' https:; \
+    frame-ancestors 'self';"
+
+</IfModule>
+```
