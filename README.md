@@ -57,12 +57,17 @@ Kapcsold be az **Email értesítések** opciót, és állíts be egy értesíté
 
 Kérdés vagy probléma esetén nyiss egy Issue-t a GitHub-on.
 
-
 ---
 
-Nem minden tárhely engedi a security header beállítást php-ból. Ha ilyennel találkozol, az alábbi kódokat tedd be a .htaccessbe, és működni fog.
+## Security headers beállítása .htaccess-ben
 
-```
+Egyes tárhelyszolgáltatók nem engedik a security headerek beállítását PHP-ból.
+Ilyen esetben az alábbi konfiguráció elhelyezhető a weboldal gyökérkönyvtárában található `.htaccess` fájlban.
+
+> Feltétel: Apache webszerver és aktív `mod_headers` modul.
+
+```apache
+
 <IfModule mod_headers.c>
 
   # HSTS – CSAK HA HTTPS VAN MINDENHOL
